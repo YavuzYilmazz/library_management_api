@@ -1,5 +1,6 @@
 import UserRepository from '../../repositories/UserRepository';
 import BookRepository from '../../repositories/BookRepository';
+import AppError from '../../utils/AppError';
 
 export default class ReturnBookUseCase {
     private userRepository: UserRepository;
@@ -15,12 +16,12 @@ export default class ReturnBookUseCase {
         const book = await this.bookRepository.getBookById(bookId);
 
         if (!user || !book) {
-            throw new Error('User or Book not found');
+            throw new AppError('User or Book not found',404);
         }
 
         const borrowedBook = user.borrowedBooks.find(b => b.bookId === bookId);
         if (!borrowedBook) {
-            throw new Error('Book was not borrowed by the user');
+            throw new AppError('Book was not borrowed by the user',400);
         }
 
         if (score) {

@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const AppError_1 = __importDefault(require("../../utils/AppError"));
 class BorrowBookUseCase {
     constructor(userRepository, bookRepository) {
         this.userRepository = userRepository;
@@ -19,11 +23,11 @@ class BorrowBookUseCase {
             const user = yield this.userRepository.getUserById(userId);
             const book = yield this.bookRepository.getBookById(bookId);
             if (!user || !book) {
-                throw new Error('User or Book not found');
+                throw new AppError_1.default('User or Book not found', 404);
             }
             const isAlreadyBorrowed = user.borrowedBooks.some(b => b.bookId === bookId);
             if (isAlreadyBorrowed) {
-                throw new Error('Book is already borrowed');
+                throw new AppError_1.default('Book is already borrowed', 400);
             }
             user.borrowedBooks.push({ bookId });
             yield this.userRepository.updateUser(user);

@@ -1,4 +1,5 @@
 import UserRepository from '../../repositories/UserRepository';
+import AppError from '../../utils/AppError';
 
 export default class GetUserByIdUseCase {
     private userRepository: UserRepository;
@@ -11,7 +12,7 @@ export default class GetUserByIdUseCase {
         const user = await this.userRepository.getUserById(id);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new AppError('User not found',404);
         }
 
         return {

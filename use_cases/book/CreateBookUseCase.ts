@@ -1,4 +1,5 @@
 import BookRepository from '../../repositories/BookRepository';
+import AppError from '../../utils/AppError';
 
 export default class CreateBookUseCase {
     private bookRepository: BookRepository;
@@ -9,7 +10,7 @@ export default class CreateBookUseCase {
 
     async execute(name: string) {
         if (!name) {
-            throw new Error('Name is required');
+            throw new AppError('Name is required',400);
         }
 
         return await this.bookRepository.createBook({ name, averageRating: 0, ratings: [] });

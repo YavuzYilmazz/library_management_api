@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const AppError_1 = __importDefault(require("../../utils/AppError"));
 class GetBookByIdUseCase {
     constructor(bookRepository) {
         this.bookRepository = bookRepository;
@@ -17,7 +21,7 @@ class GetBookByIdUseCase {
         return __awaiter(this, void 0, void 0, function* () {
             const book = yield this.bookRepository.getBookById(id);
             if (!book) {
-                throw new Error('Book not found');
+                throw new AppError_1.default('Book not found', 404);
             }
             return book;
         });

@@ -1,4 +1,5 @@
 import UserRepository from '../../repositories/UserRepository';
+import AppError from '../../utils/AppError';
 
 export default class CreateUserUseCase {
     private userRepository: UserRepository;
@@ -8,7 +9,8 @@ export default class CreateUserUseCase {
     }
 
     async execute(name: string) {
-        if (!name) throw new Error('Name is required');
+        if (!name) 
+            throw new AppError('Name is required',404);
         return await this.userRepository.createUser({ name, borrowedBooks: [] });
     }
 }

@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const AppError_1 = __importDefault(require("../../utils/AppError"));
 class CreateUserUseCase {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -16,7 +20,7 @@ class CreateUserUseCase {
     execute(name) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!name)
-                throw new Error('Name is required');
+                throw new AppError_1.default('Name is required', 404);
             return yield this.userRepository.createUser({ name, borrowedBooks: [] });
         });
     }

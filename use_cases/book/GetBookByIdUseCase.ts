@@ -1,4 +1,5 @@
 import BookRepository from '../../repositories/BookRepository';
+import AppError from '../../utils/AppError';
 
 export default class GetBookByIdUseCase {
     private bookRepository: BookRepository;
@@ -10,7 +11,7 @@ export default class GetBookByIdUseCase {
     async execute(id: string) {
         const book = await this.bookRepository.getBookById(id);
         if (!book) {
-            throw new Error('Book not found');
+            throw new AppError('Book not found',404);
         }
         return book;
     }

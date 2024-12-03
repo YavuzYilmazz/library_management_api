@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import connectMongoDB from '../../infrastructure/database/mongoConnection';
 import userRoutes from '../routes/userRoutes';
 import bookRoutes from '../routes/bookRoutes';
+import { Request, Response, NextFunction } from 'express';
+import AppError from '../../utils/AppError';
 
 const app = express();
 
@@ -23,6 +25,15 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/users', userRoutes);
 app.use('/books', bookRoutes);
+
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof AppError) {
+        res.status(err.status).json({ message: err.message });
+    } else {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 
 
 export default app;
