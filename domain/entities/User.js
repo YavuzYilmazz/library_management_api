@@ -42,5 +42,5 @@ const UserSchema = new mongoose_1.Schema({
             score: { type: Number, default: null },
         },
     ],
-});
+}, { versionKey: false });
 exports.default = mongoose_1.default.model('User', UserSchema);

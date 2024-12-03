@@ -10,6 +10,7 @@ const BookSchema: Schema = new Schema({
     name: { type: String, required: true },
     averageRating: { type: Number, default: 0 },
     ratings: { type: [Number], default: [] },
-});
+},
+{ versionKey: false });
 
 export default mongoose.model<IBook>('Book', BookSchema);

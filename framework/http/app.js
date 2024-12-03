@@ -8,6 +8,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const mongoConnection_1 = __importDefault(require("../../infrastructure/database/mongoConnection"));
+const userRoutes_1 = __importDefault(require("../routes/userRoutes"));
+const bookRoutes_1 = __importDefault(require("../routes/bookRoutes"));
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 // Middleware
@@ -17,4 +19,7 @@ app.use((0, cors_1.default)());
 app.get('/', (req, res) => {
     res.send('Library Management API is running...');
 });
+// Routes
+app.use('/users', userRoutes_1.default);
+app.use('/books', bookRoutes_1.default);
 exports.default = app;

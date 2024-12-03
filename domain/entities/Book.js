@@ -38,5 +38,5 @@ const BookSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     averageRating: { type: Number, default: 0 },
     ratings: { type: [Number], default: [] },
-});
+}, { versionKey: false });
 exports.default = mongoose_1.default.model('Book', BookSchema);

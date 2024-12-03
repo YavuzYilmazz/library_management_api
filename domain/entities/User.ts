@@ -13,6 +13,7 @@ const UserSchema: Schema = new Schema({
             score: { type: Number, default: null },
         },
     ],
-});
+},
+{ versionKey: false });
 
 export default mongoose.model<IUser>('User', UserSchema);
