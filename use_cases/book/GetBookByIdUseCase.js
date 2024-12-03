@@ -23,7 +23,12 @@ class GetBookByIdUseCase {
             if (!book) {
                 throw new AppError_1.default('Book not found', 404);
             }
-            return book;
+            return {
+                id: book._id,
+                name: book.name,
+                score: book.score,
+            };
+            ;
         });
     }
 }

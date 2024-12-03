@@ -9,8 +9,18 @@ export default class CreateUserUseCase {
     }
 
     async execute(name: string) {
-        if (!name) 
-            throw new AppError('Name is required',404);
-        return await this.userRepository.createUser({ name, borrowedBooks: [] });
+        if (!name) {
+            throw new AppError('Name is required', 400);
+        }
+
+        const newUser = {
+            name,
+            books: {
+                past: [],
+                present: [],
+            },
+        };
+
+        return await this.userRepository.createUser(newUser);
     }
 }

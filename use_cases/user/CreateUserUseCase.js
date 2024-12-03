@@ -19,9 +19,17 @@ class CreateUserUseCase {
     }
     execute(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!name)
-                throw new AppError_1.default('Name is required', 404);
-            return yield this.userRepository.createUser({ name, borrowedBooks: [] });
+            if (!name) {
+                throw new AppError_1.default('Name is required', 400);
+            }
+            const newUser = {
+                name,
+                books: {
+                    past: [],
+                    present: [],
+                },
+            };
+            return yield this.userRepository.createUser(newUser);
         });
     }
 }

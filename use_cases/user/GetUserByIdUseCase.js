@@ -27,16 +27,12 @@ class GetUserByIdUseCase {
                 id: user._id,
                 name: user.name,
                 books: {
-                    past: user.borrowedBooks
-                        .filter(book => book.score !== null)
-                        .map(book => ({
-                        bookId: book.bookId,
-                        score: book.score,
+                    past: user.books.past.map(book => ({
+                        name: book.name,
+                        userScore: book.userScore,
                     })),
-                    present: user.borrowedBooks
-                        .filter(book => book.score === null)
-                        .map(book => ({
-                        bookId: book.bookId,
+                    present: user.books.present.map(book => ({
+                        name: book.name,
                     })),
                 },
             };

@@ -12,24 +12,20 @@ export default class GetUserByIdUseCase {
         const user = await this.userRepository.getUserById(id);
 
         if (!user) {
-            throw new AppError('User not found',404);
+            throw new AppError('User not found', 404);
         }
 
         return {
             id: user._id,
             name: user.name,
             books: {
-                past: user.borrowedBooks
-                    .filter(book => book.score !== null)
-                    .map(book => ({
-                        bookId: book.bookId,
-                        score: book.score,
-                    })),
-                present: user.borrowedBooks
-                    .filter(book => book.score === null)
-                    .map(book => ({
-                        bookId: book.bookId,
-                    })),
+                past: user.books.past.map(book => ({
+                    name: book.name,
+                    userScore: book.userScore,
+                })),
+                present: user.books.present.map(book => ({
+                    name: book.name,
+                })),
             },
         };
     }

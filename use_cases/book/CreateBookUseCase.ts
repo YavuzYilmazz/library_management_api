@@ -13,6 +13,6 @@ export default class CreateBookUseCase {
             throw new AppError('Name is required',400);
         }
 
-        return await this.bookRepository.createBook({ name, averageRating: 0, ratings: [] });
+        return await this.bookRepository.createBook({ name});
     }
 }

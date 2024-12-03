@@ -15,24 +15,43 @@ export default class ReturnBookUseCase {
         const user = await this.userRepository.getUserById(userId);
         const book = await this.bookRepository.getBookById(bookId);
 
-        if (!user || !book) {
-            throw new AppError('User or Book not found',404);
+        if (!book) {
+            throw new AppError('Book not found', 404);
         }
 
-        const borrowedBook = user.borrowedBooks.find(b => b.bookId === bookId);
-        if (!borrowedBook) {
-            throw new AppError('Book was not borrowed by the user',400);
+        if (!user) {
+            throw new AppError('User not found', 404);
         }
 
-        if (score) {
-            book.ratings.push(score);
-            book.averageRating =
-                book.ratings.reduce((sum, rating) => sum + rating, 0) / book.ratings.length;
+        const borrowedBookIndex = user.books.present.findIndex(b => b.bookId === bookId);
+        if (borrowedBookIndex === -1) {
+            throw new AppError('This book is not currently borrowed by the user', 400);
+        }
 
+        if (score !== undefined) {
+            if (score <= 1 || score >= 10) {
+                throw new AppError('Score must be between 1 and 10', 400);
+            }
+
+            if (book.score === -1) {
+                book.score = score;
+                book.voteCount = 1;
+            } else {
+                book.score = (book.score * book.voteCount + score) / (book.voteCount + 1);
+                book.voteCount += 1;
+            }
             await this.bookRepository.updateBook(book);
         }
 
-        user.borrowedBooks = user.borrowedBooks.filter(b => b.bookId !== bookId);
+        const borrowedBook = user.books.present[borrowedBookIndex];
+        user.books.present.splice(borrowedBookIndex, 1);
+
+        user.books.past.push({
+            bookId: borrowedBook.bookId,
+            name: book.name,
+            userScore: score ?? undefined,
+        });
+
         await this.userRepository.updateUser(user);
 
         return { message: 'Book returned successfully' };

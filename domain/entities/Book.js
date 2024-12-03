@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const BookSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
-    averageRating: { type: Number, default: 0 },
-    ratings: { type: [Number], default: [] },
+    score: { type: Number, default: -1 },
+    voteCount: { type: Number, default: 0 },
 }, { versionKey: false });
 exports.default = mongoose_1.default.model('Book', BookSchema);

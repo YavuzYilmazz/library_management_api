@@ -2,15 +2,14 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IBook extends Document {
     name: string;
-    averageRating: number;
-    ratings: number[];
+    score: number;
+    voteCount: number;
 }
 
 const BookSchema: Schema = new Schema({
     name: { type: String, required: true },
-    averageRating: { type: Number, default: 0 },
-    ratings: { type: [Number], default: [] },
-},
-{ versionKey: false });
+    score: { type: Number, default: -1 },
+    voteCount: { type: Number, default: 0 },
+}, { versionKey: false });
 
 export default mongoose.model<IBook>('Book', BookSchema);

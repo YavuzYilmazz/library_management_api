@@ -15,16 +15,22 @@ export default class BorrowBookUseCase {
         const user = await this.userRepository.getUserById(userId);
         const book = await this.bookRepository.getBookById(bookId);
 
-        if (!user || !book) {
-            throw new AppError('User or Book not found',404);
+        if (!book) {
+            throw new AppError('Book not found', 404);
         }
 
-        const isAlreadyBorrowed = user.borrowedBooks.some(b => b.bookId === bookId);
+        if (!user) {
+            throw new AppError('User not found', 404);
+        }
+
+        user.books = user.books || { past: [], present: [] };
+
+        const isAlreadyBorrowed = user.books.present.some(b => b.bookId === bookId);
         if (isAlreadyBorrowed) {
-            throw new AppError('Book is already borrowed',400);
+            throw new AppError('Book is already borrowed by this user', 400);
         }
 
-        user.borrowedBooks.push({ bookId });
+        user.books.present.push({ bookId, name: book.name });
         await this.userRepository.updateUser(user);
 
         return { message: 'Book borrowed successfully' };
