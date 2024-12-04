@@ -38,9 +38,9 @@ This project is a RESTful API designed for managing a library system. The API ha
 
 3. Copy the provided .env.dist file to a new file named .env in the root directory of the project:
 
-```bash
-cp .env.dist .env
-```
+    ```bash
+    cp .env.dist .env
+    ```
 
 
 4. Start the application:
