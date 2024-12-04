@@ -10,9 +10,15 @@ export default class CreateBookUseCase {
 
     async execute(name: string) {
         if (!name) {
-            throw new AppError('Name is required',400);
+            throw new AppError('Name is required', 400);
         }
 
-        return await this.bookRepository.createBook({ name});
+        const book = await this.bookRepository.createBook({ name });
+
+        return {
+            id: book._id,
+            name: book.name,
+            score: book.score
+        };
     }
 }

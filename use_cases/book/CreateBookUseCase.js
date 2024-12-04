@@ -22,7 +22,12 @@ class CreateBookUseCase {
             if (!name) {
                 throw new AppError_1.default('Name is required', 400);
             }
-            return yield this.bookRepository.createBook({ name });
+            const book = yield this.bookRepository.createBook({ name });
+            return {
+                id: book._id,
+                name: book.name,
+                score: book.score
+            };
         });
     }
 }
